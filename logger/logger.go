@@ -1,9 +1,9 @@
 package logger
 
 import (
-	"bytes"
 	"encoding/json"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/kataras/iris"

@@ -22,7 +22,7 @@ type Config struct {
 	// Body display body of request (bool)
 	Body bool
 	// MaxLenToPrint display max length of body
-	MaxLenToPrint uint
+	MaxLenToPrint int
 }
 
 // DefaultConfig returns an options which all properties are true except EnableColors
