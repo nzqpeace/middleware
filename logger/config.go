@@ -17,11 +17,15 @@ type Config struct {
 	Path bool
 	// Date displays time of request (bool)
 	Date bool
+	// RequestID display uuid of request (bool)
+	RequestID bool
+	// Body display body of request (bool)
+	Body bool
 }
 
 // DefaultConfig returns an options which all properties are true except EnableColors
 func DefaultConfig() Config {
-	return Config{true, true, true, true, false}
+	return Config{true, true, true, true, false, true, true}
 }
 
 // Merge merges the default with the given config and returns the result

@@ -14,11 +14,13 @@ type loggerMiddleware struct {
 // Serve serves the middleware
 func (l *loggerMiddleware) Serve(ctx *iris.Context) {
 	//all except latency to string
-	var date, status, ip, method, path string
+	var date, status, ip, method, path, body, requestID string
 	var latency time.Duration
 	var startTime, endTime time.Time
 	path = ctx.RequestPath(false)
 	method = ctx.MethodString()
+	requestID = strconv.FormatUint(ctx.GetRequestCtx().ID(), 10)
+	body = bytes.NewBuffer(ctx.RequestCtx.Request.Body()).String()
 
 	startTime = time.Now()
 
@@ -48,8 +50,15 @@ func (l *loggerMiddleware) Serve(ctx *iris.Context) {
 		date = ""
 	}
 
+	if !l.config.RequestID {
+		requestID = ""
+	}
+
+	if !l.config.Body {
+		body = ""
+	}
 	//finally print the logs
-	ctx.Log("%s %v %4v %s %s %s \n", date, status, latency, ip, method, path)
+	ctx.Log("[%d] %s %v %4v %s %s %s %s\n", requestID, date, status, latency, ip, method, path, body)
 
 }
 
