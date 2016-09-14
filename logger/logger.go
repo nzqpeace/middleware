@@ -17,7 +17,7 @@ func (l *loggerMiddleware) Serve(ctx *iris.Context) {
 	var date, status, ip, method, path string
 	var latency time.Duration
 	var startTime, endTime time.Time
-	path = ctx.PathString()
+	path = ctx.RequestPath(false)
 	method = ctx.MethodString()
 
 	startTime = time.Now()
@@ -42,6 +42,10 @@ func (l *loggerMiddleware) Serve(ctx *iris.Context) {
 
 	if !l.config.Path {
 		path = ""
+	}
+
+	if !l.config.Date {
+		date = ""
 	}
 
 	//finally print the logs
