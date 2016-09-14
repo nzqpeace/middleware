@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"bytes"
 	"strconv"
 	"time"
 
