@@ -21,11 +21,13 @@ type Config struct {
 	RequestID bool
 	// Body display body of request (bool)
 	Body bool
+	// MaxLenToPrint display max length of body
+	MaxLenToPrint uint
 }
 
 // DefaultConfig returns an options which all properties are true except EnableColors
 func DefaultConfig() Config {
-	return Config{true, true, true, true, false, true, true}
+	return Config{true, true, true, true, false, true, true, 2048}
 }
 
 // Merge merges the default with the given config and returns the result

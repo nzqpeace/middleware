@@ -2,6 +2,7 @@ package logger
 
 import (
 	"bytes"
+	"encoding/json"
 	"strconv"
 	"time"
 
@@ -21,7 +22,6 @@ func (l *loggerMiddleware) Serve(ctx *iris.Context) {
 	path = ctx.RequestPath(false)
 	method = ctx.MethodString()
 	requestID = strconv.FormatUint(ctx.GetRequestCtx().ID(), 10)
-	body = bytes.NewBuffer(ctx.RequestCtx.Request.Body()).String()
 
 	startTime = time.Now()
 
@@ -55,8 +55,21 @@ func (l *loggerMiddleware) Serve(ctx *iris.Context) {
 		requestID = ""
 	}
 
-	if !l.config.Body {
-		body = ""
+	if !l.config.Body || len(body) > l.config.MaxLenToPrint {
+		body = body[:l.config.MaxLenToPrint]
+	} else {
+		b := ctx.RequestCtx.Request.Body()
+		contentType := string(ctx.GetRequestCtx().Request.Header.ContentType())
+		if len(b) > 0 && strings.ToLower(contentType) == "application/json" {
+			var p interface{}
+			err := json.Unmarshal(b, &p)
+			if err == nil {
+				b, err = json.Marshal(p)
+				if err == nil {
+					body = string(b)
+				}
+			}
+		}
 	}
 	//finally print the logs
 	ctx.Log("[%s] %s %v %4v %s %s %s %s\n", requestID, date, status, latency, ip, method, path, body)
