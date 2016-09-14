@@ -59,7 +59,7 @@ func (l *loggerMiddleware) Serve(ctx *iris.Context) {
 		body = ""
 	}
 	//finally print the logs
-	ctx.Log("[%d] %s %v %4v %s %s %s %s\n", requestID, date, status, latency, ip, method, path, body)
+	ctx.Log("[%s] %s %v %4v %s %s %s %s\n", requestID, date, status, latency, ip, method, path, body)
 
 }
 
