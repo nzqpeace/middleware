@@ -78,9 +78,9 @@ func (l *loggerMiddleware) Serve(ctx *iris.Context) {
 
 // New returns the logger middleware
 // receives optional configs(logger.Config)
-func New(cfg ...Config) iris.HandlerFunc {
+func New(cfg ...Config) iris.Handler {
 	c := DefaultConfig().Merge(cfg)
 	l := &loggerMiddleware{config: c}
 
-	return l.Serve
+	return l
 }
